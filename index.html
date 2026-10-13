@@ -1,38 +1,466 @@
+
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>El penal de Messi | Diagrama de actividad UML</title>
+
 <style>
-:root{--navy:#16324f;--blue:#dff1ff;--sky:#73b8e8;--yellow:#ffd166;--green:#d8f3dc;--red:#ffe0e0;--ink:#203040}
-*{box-sizing:border-box}body{margin:0;background:#f4f8fc;color:var(--ink);font-family:Arial,Helvetica,sans-serif}header{background:var(--navy);color:white;padding:22px 5%;}header h1{margin:0 0 7px;font-size:clamp(24px,3vw,36px)}header p{margin:0;color:#dcecff}.wrap{max-width:1250px;margin:auto;padding:22px}.layout{display:grid;grid-template-columns:1.05fr .95fr;gap:20px}.panel{background:white;border:1px solid #d9e5ef;border-radius:16px;padding:18px;box-shadow:0 4px 16px #17324f0b}.panel h2{margin:0 0 12px;color:var(--navy);font-size:20px}.video{position:relative;width:100%;aspect-ratio:16/9;background:#15283a;border-radius:10px;overflow:hidden}.video iframe{width:100%;height:100%;border:0}.hint{font-size:13px;color:#536779;line-height:1.5}.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.controls button,.open{border:0;border-radius:9px;padding:10px 14px;background:var(--navy);color:white;font-weight:700;cursor:pointer}.controls button.secondary{background:#e6eef6;color:var(--navy)}.controls button:disabled{opacity:.4;cursor:not-allowed}.stepcount{font-size:13px;color:#587083;margin:12px 0 5px}.steptext{font-size:18px;font-weight:700;min-height:48px;margin:0 0 12px}.diagram{min-height:330px;display:flex;align-items:center;justify-content:center;background:#f8fbfe;border:1px dashed #c6d9e8;border-radius:12px;padding:12px;overflow:auto}.diagram svg{width:100%;max-height:460px;min-width:270px}.node{fill:white;stroke:#7998b2;stroke-width:2}.node.active{fill:var(--blue);stroke:#1976b9;stroke-width:3}.decision{fill:#fff2c6;stroke:#d49a00;stroke-width:2}.success{fill:var(--green);stroke:#31824a;stroke-width:2}.fail{fill:var(--red);stroke:#bd5a5a;stroke-width:2}.edge{stroke:#8ba2b5;stroke-width:2.5;fill:none;opacity:.25}.edge.on{opacity:1;stroke:#1976b9;stroke-width:3}.label{font-size:13px;fill:#203040;text-anchor:middle}.foot{margin-top:18px;font-size:12px;color:#617487;text-align:center}.open{display:inline-block;text-decoration:none;margin-top:12px}.badge{display:inline-block;background:#e9f4ff;color:#1b5c8a;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:bold;margin-bottom:10px}
-@media(max-width:800px){.layout{grid-template-columns:1fr}.wrap{padding:12px}.panel{padding:14px}}
+:root {
+  --navy: #16324f;
+  --blue: #dff1ff;
+  --sky: #73b8e8;
+  --yellow: #ffd166;
+  --green: #d8f3dc;
+  --red: #ffe0e0;
+  --ink: #203040;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f4f8fc;
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  background: var(--navy);
+  color: white;
+  padding: 22px 5%;
+}
+
+header h1 {
+  margin: 0 0 7px;
+  font-size: clamp(24px, 3vw, 36px);
+}
+
+header p {
+  margin: 0;
+  color: #dcecff;
+}
+
+.wrap {
+  max-width: 1250px;
+  margin: auto;
+  padding: 22px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 20px;
+}
+
+.panel {
+  background: white;
+  border: 1px solid #d9e5ef;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 4px 16px #17324f0b;
+}
+
+.panel h2 {
+  margin: 0 0 12px;
+  color: var(--navy);
+  font-size: 20px;
+}
+
+.video {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #15283a;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.video iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.hint {
+  font-size: 13px;
+  color: #536779;
+  line-height: 1.5;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.controls button,
+.open {
+  border: 0;
+  border-radius: 9px;
+  padding: 10px 14px;
+  background: var(--navy);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.controls button.secondary {
+  background: #e6eef6;
+  color: var(--navy);
+}
+
+.controls button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.stepcount {
+  font-size: 13px;
+  color: #587083;
+  margin: 12px 0 5px;
+}
+
+.steptext {
+  font-size: 18px;
+  font-weight: 700;
+  min-height: 48px;
+  margin: 0 0 12px;
+}
+
+.diagram {
+  min-height: 330px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fbfe;
+  border: 1px dashed #c6d9e8;
+  border-radius: 12px;
+  padding: 12px;
+  overflow: auto;
+}
+
+.diagram svg {
+  width: 100%;
+  max-height: 460px;
+  min-width: 270px;
+}
+
+.node {
+  fill: white;
+  stroke: #7998b2;
+  stroke-width: 2;
+}
+
+.node.active {
+  fill: var(--blue);
+  stroke: #1976b9;
+  stroke-width: 3;
+}
+
+.decision {
+  fill: #fff2c6;
+  stroke: #d49a00;
+  stroke-width: 2;
+}
+
+.success {
+  fill: var(--green);
+  stroke: #31824a;
+  stroke-width: 2;
+}
+
+.fail {
+  fill: var(--red);
+  stroke: #bd5a5a;
+  stroke-width: 2;
+}
+
+.edge {
+  stroke: #8ba2b5;
+  stroke-width: 2.5;
+  fill: none;
+  opacity: 0.25;
+}
+
+.edge.on {
+  opacity: 1;
+  stroke: #1976b9;
+  stroke-width: 3;
+}
+
+.label {
+  font-size: 13px;
+  fill: #203040;
+  text-anchor: middle;
+}
+
+.foot {
+  margin-top: 18px;
+  font-size: 12px;
+  color: #617487;
+  text-align: center;
+}
+
+.badge {
+  display: inline-block;
+  background: #e9f4ff;
+  color: #1b5c8a;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 800px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .wrap {
+    padding: 12px;
+  }
+
+  .panel {
+    padding: 14px;
+  }
+}
 </style>
 </head>
+
 <body>
-<header><h1>El penal de Messi</h1><p>Reconstruimos una secuencia con un diagrama de actividad UML</p></header>
-<main class="wrap"><div class="layout">
-<section class="panel"><span class="badge">1 · OBSERVAR</span><h2>Video del penal</h2><div class="video"><iframe src="https://www.youtube.com/embed/TZFGkrxv-Ow?rel=0" title="Video del penal de Messi" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><p class="hint">El video está integrado en esta página. Reproducilo aquí y pulsá <b>Mostrar siguiente acción</b> para construir el diagrama junto con el grupo. Si aparece el error 153 al abrir este archivo con doble clic, iniciá la página mediante un servidor local (instrucciones debajo).</p></section>
-<section class="panel"><span class="badge">2 · CONSTRUIR</span><h2>Diagrama de actividad UML</h2><div class="stepcount" id="count">Paso 0 de 6</div><p class="steptext" id="stepText">Pulsa «Mostrar siguiente acción» para comenzar.</p><div class="diagram"><svg viewBox="0 0 360 480" role="img" aria-label="Diagrama de actividad que se construye paso a paso">
-<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#1976b9"/></marker></defs>
-<path id="e1" class="edge" d="M180 48 V75" marker-end="url(#arrow)"/><path id="e2" class="edge" d="M180 119 V145" marker-end="url(#arrow)"/><path id="e3" class="edge" d="M180 189 V215" marker-end="url(#arrow)"/><path id="e4" class="edge" d="M180 275 V300" marker-end="url(#arrow)"/><path id="e5" class="edge" d="M160 340 L88 378" marker-end="url(#arrow)"/><path id="e6" class="edge" d="M200 340 L272 378" marker-end="url(#arrow)"/>
-<circle id="n0" cx="180" cy="28" r="11" fill="#16324f"/><rect id="n1" class="node" x="92" y="75" width="176" height="44" rx="10"/><text class="label" x="180" y="93"><tspan x="180">Messi se coloca</tspan><tspan x="180" dy="15">frente al balón</tspan></text>
-<rect id="n2" class="node" x="92" y="145" width="176" height="44" rx="10"/><text class="label" x="180" y="163"><tspan x="180">Toma impulso</tspan><tspan x="180" dy="15">y patea</tspan></text>
-<rect id="n3" class="node" x="92" y="215" width="176" height="60" rx="10"/><text class="label" x="180" y="239"><tspan x="180">El balón se dirige</tspan><tspan x="180" dy="16">hacia el arco</tspan></text>
-<polygon id="n4" class="decision" points="180,300 224,328 180,356 136,328"/><text class="label" x="180" y="325"><tspan x="180">¿Entra?</tspan></text>
-<text class="label" x="108" y="359">Sí</text><text class="label" x="252" y="359">No</text>
-<rect id="n5" class="success" x="16" y="378" width="144" height="45" rx="9"/><text class="label" x="88" y="397"><tspan x="88">Gol</tspan><tspan x="88" dy="15">confirmado</tspan></text>
-<rect id="n6" class="fail" x="200" y="378" width="144" height="45" rx="9"/><text class="label" x="272" y="397"><tspan x="272">No se convierte</tspan><tspan x="272" dy="15">el gol</tspan></text>
-<path id="e7" class="edge" d="M88 423 V445 H180" marker-end="url(#arrow)"/><path id="e8" class="edge" d="M272 423 V445 H180" marker-end="url(#arrow)"/><circle id="n7" cx="180" cy="457" r="12" fill="white" stroke="#16324f" stroke-width="3"/><circle cx="180" cy="457" r="6" fill="#16324f"/>
-</svg></div><div class="controls"><button id="next">Mostrar siguiente acción →</button><button id="back" class="secondary" disabled>← Anterior</button><button id="reset" class="secondary">Reiniciar</button></div><p class="hint">La rama final se deja como decisión didáctica: observá el video y conversá con el grupo cuál resultado corresponde. Los tiempos exactos dependen de la reproducción del video.</p></section></div><p class="foot">Recurso didáctico de apoyo · UML · Diagrama de actividad</p><section class="panel" style="margin-top:16px"><h2>Si aparece el error 153</h2><p class="hint">YouTube puede bloquear el reproductor cuando se abre un HTML directamente como archivo (dirección <code>file://</code>). Para mantener el video en esta misma página, abrí la carpeta del archivo en VS Code y ejecutá <b>Open with Live Server</b>. Si no tenés Live Server, abrí una terminal en esa carpeta y ejecutá <code>py -m http.server 8000</code>; luego entrá a <code>http://localhost:8000/penal_messi_diagrama_interactivo.html</code> en Chrome. El equipo necesita conexión a Internet.</p></section></main>
+
+<header>
+  <h1>El penal de Messi</h1>
+  <p>Reconstruimos una secuencia con un diagrama de actividad UML</p>
+</header>
+
+<main class="wrap">
+
+  <div class="layout">
+
+    <!-- PANEL DEL VIDEO -->
+    <section class="panel">
+      <span class="badge">1 · OBSERVAR</span>
+      <h2>Video del penal</h2>
+
+      <div class="video">
+        <iframe
+          src="https://www.youtube.com/embed/TZFGkrxv-Ow?rel=0"
+          title="Video del penal de Messi"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe>
+      </div>
+
+      <p class="hint">
+        El video está integrado en esta página. Reproducilo aquí y pulsá
+        <b>Mostrar siguiente acción</b> para construir el diagrama junto con el grupo.
+      </p>
+    </section>
+
+    <!-- PANEL DEL DIAGRAMA -->
+    <section class="panel">
+      <span class="badge">2 · CONSTRUIR</span>
+      <h2>Diagrama de actividad UML</h2>
+
+      <div class="stepcount" id="count">Paso 0 de 7</div>
+
+      <p class="steptext" id="stepText">
+        Pulsa «Mostrar siguiente acción» para comenzar.
+      </p>
+
+      <div class="diagram">
+        <svg viewBox="0 0 360 480"
+             role="img"
+             aria-label="Diagrama de actividad que se construye paso a paso">
+
+          <defs>
+            <marker id="arrow"
+                    markerWidth="8"
+                    markerHeight="8"
+                    refX="6"
+                    refY="3"
+                    orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#1976b9"/>
+            </marker>
+          </defs>
+
+          <path id="e1" class="edge" d="M180 48 V75" marker-end="url(#arrow)"/>
+          <path id="e2" class="edge" d="M180 119 V145" marker-end="url(#arrow)"/>
+          <path id="e3" class="edge" d="M180 189 V215" marker-end="url(#arrow)"/>
+          <path id="e4" class="edge" d="M180 275 V300" marker-end="url(#arrow)"/>
+          <path id="e5" class="edge" d="M160 340 L88 378" marker-end="url(#arrow)"/>
+          <path id="e6" class="edge" d="M200 340 L272 378" marker-end="url(#arrow)"/>
+
+          <circle id="n0" cx="180" cy="28" r="11" fill="#16324f"/>
+
+          <rect id="n1" class="node" x="92" y="75" width="176" height="44" rx="10"/>
+          <text class="label" x="180" y="93">
+            <tspan x="180">Messi se coloca</tspan>
+            <tspan x="180" dy="15">frente al balón</tspan>
+          </text>
+
+          <rect id="n2" class="node" x="92" y="145" width="176" height="44" rx="10"/>
+          <text class="label" x="180" y="163">
+            <tspan x="180">Toma impulso</tspan>
+            <tspan x="180" dy="15">y patea</tspan>
+          </text>
+
+          <rect id="n3" class="node" x="92" y="215" width="176" height="60" rx="10"/>
+          <text class="label" x="180" y="239">
+            <tspan x="180">El balón se dirige</tspan>
+            <tspan x="180" dy="16">hacia el arco</tspan>
+          </text>
+
+          <polygon id="n4" class="decision"
+                   points="180,300 224,328 180,356 136,328"/>
+
+          <text class="label" x="180" y="325">
+            <tspan x="180">¿Entra?</tspan>
+          </text>
+
+          <text class="label" x="108" y="359">Sí</text>
+          <text class="label" x="252" y="359">No</text>
+
+          <rect id="n5" class="success" x="16" y="378" width="144" height="45" rx="9"/>
+          <text class="label" x="88" y="397">
+            <tspan x="88">Gol</tspan>
+            <tspan x="88" dy="15">confirmado</tspan>
+          </text>
+
+          <rect id="n6" class="fail" x="200" y="378" width="144" height="45" rx="9"/>
+          <text class="label" x="272" y="397">
+            <tspan x="272">No se convierte</tspan>
+            <tspan x="272" dy="15">el gol</tspan>
+          </text>
+
+          <path id="e7" class="edge" d="M88 423 V445 H180" marker-end="url(#arrow)"/>
+          <path id="e8" class="edge" d="M272 423 V445 H180" marker-end="url(#arrow)"/>
+
+          <circle id="n7" cx="180" cy="457" r="12"
+                  fill="white" stroke="#16324f" stroke-width="3"/>
+          <circle cx="180" cy="457" r="6" fill="#16324f"/>
+
+        </svg>
+      </div>
+
+      <div class="controls">
+        <button id="next">Mostrar siguiente acción →</button>
+        <button id="back" class="secondary" disabled>← Anterior</button>
+        <button id="reset" class="secondary">Reiniciar</button>
+      </div>
+
+      <p class="hint">
+        La rama final se deja como decisión didáctica: observá el video y conversá
+        con el grupo cuál resultado corresponde. Los tiempos exactos dependen de la reproducción del video.
+      </p>
+    </section>
+
+  </div>
+
+  <p class="foot">
+    Recurso didáctico de apoyo · UML · Diagrama de actividad
+  </p>
+
+</main>
+
 <script>
-const steps=[
-{t:'Inicio del proceso: Messi se prepara frente al balón.',nodes:['n0'],edges:[]},
-{t:'Acción 1: Messi se coloca frente al balón.',nodes:['n1'],edges:['e1']},
-{t:'Acción 2: toma impulso y patea el balón.',nodes:['n2'],edges:['e2']},
-{t:'Acción 3: el balón se dirige hacia el arco.',nodes:['n3'],edges:['e3']},
-{t:'Decisión: ¿el balón entra en el arco? El flujo se divide según el resultado.',nodes:['n4'],edges:['e4']},
-{t:'Resultado posible: Sí → se convierte el gol. Compará esta rama con lo que muestra el video.',nodes:['n5'],edges:['e5','e7']},
-{t:'Resultado alternativo: No → no se convierte el gol. El diagrama contempla ambas posibilidades.',nodes:['n6'],edges:['e6','e8','e7']}
-];let idx=0;const $=id=>document.getElementById(id);function render(){document.querySelectorAll('.node,.decision,.success,.fail').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.edge').forEach(n=>n.classList.remove('on'));for(let i=0;i<idx;i++){steps[i].nodes.forEach(id=>$(id)?.classList.add('active'));steps[i].edges.forEach(id=>$(id)?.classList.add('on'))} $('count').textContent=`Paso ${idx} de ${steps.length}`;$('stepText').textContent=idx===0?'Pulsa «Mostrar siguiente acción» para comenzar.':steps[idx-1].t;$('back').disabled=idx===0;$('next').disabled=idx===steps.length;$('next').textContent=idx===steps.length?'Secuencia completa ✓':'Mostrar siguiente acción →'}$('next').addEventListener('click',()=>{if(idx<steps.length)idx++;render()});$('back').addEventListener('click',()=>{if(idx>0)idx--;render()});$('reset').addEventListener('click',()=>{idx=0;render()});render();
-</script></body></html>
+const steps = [
+  {
+    t: 'Inicio del proceso: Messi se prepara frente al balón.',
+    nodes: ['n0'],
+    edges: []
+  },
+  {
+    t: 'Acción 1: Messi se coloca frente al balón.',
+    nodes: ['n1'],
+    edges: ['e1']
+  },
+  {
+    t: 'Acción 2: toma impulso y patea el balón.',
+    nodes: ['n2'],
+    edges: ['e2']
+  },
+  {
+    t: 'Acción 3: el balón se dirige hacia el arco.',
+    nodes: ['n3'],
+    edges: ['e3']
+  },
+  {
+    t: 'Decisión: ¿el balón entra en el arco? El flujo se divide según el resultado.',
+    nodes: ['n4'],
+    edges: ['e4']
+  },
+  {
+    t: 'Resultado posible: Sí → se convierte el gol. Compará esta rama con lo que muestra el video.',
+    nodes: ['n5'],
+    edges: ['e5', 'e7']
+  },
+  {
+    t: 'Resultado alternativo: No → no se convierte el gol. El diagrama contempla ambas posibilidades.',
+    nodes: ['n6'],
+    edges: ['e6', 'e8']
+  }
+];
+
+let idx = 0;
+
+const $ = id => document.getElementById(id);
+
+function render() {
+  document.querySelectorAll('.node, .decision, .success, .fail')
+    .forEach(n => n.classList.remove('active'));
+
+  document.querySelectorAll('.edge')
+    .forEach(n => n.classList.remove('on'));
+
+  for (let i = 0; i < idx; i++) {
+    steps[i].nodes.forEach(id => $(id)?.classList.add('active'));
+    steps[i].edges.forEach(id => $(id)?.classList.add('on'));
+  }
+
+  $('count').textContent = `Paso ${idx} de ${steps.length}`;
+
+  $('stepText').textContent = idx === 0
+    ? 'Pulsa «Mostrar siguiente acción» para comenzar.'
+    : steps[idx - 1].t;
+
+  $('back').disabled = idx === 0;
+  $('next').disabled = idx === steps.length;
+
+  $('next').textContent = idx === steps.length
+    ? 'Secuencia completa ✓'
+    : 'Mostrar siguiente acción →';
+}
+
+$('next').addEventListener('click', () => {
+  if (idx < steps.length) {
+    idx++;
+    render();
+  }
+});
+
+$('back').addEventListener('click', () => {
+  if (idx > 0) {
+    idx--;
+    render();
+  }
+});
+
+$('reset').addEventListener('click', () => {
+  idx = 0;
+  render();
+});
+
+render();
+</script>
+
+</body>
+</html>
